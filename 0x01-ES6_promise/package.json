@@ -1,5 +1,5 @@
 {
-  "name": "your-project-name",
+  "name": "0x01-es6_promise",
   "version": "1.0.0",
   "scripts": {
     "test": "jest"
