@@ -1,9 +1,3 @@
-function signUpUser(firstName, lastName) {
-    return new Promise((resolve, reject) => {
-      const user = {
-        firstName: firstName,
-        lastName: lastName,
-      };
-      resolve(user);
-    });
-  }
+export default function signUpUser(firstName, lastName) {
+  return Promise.resolve({ firstName, lastName });
+}
