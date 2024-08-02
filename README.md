@@ -14,7 +14,7 @@
     Building APIs with Express.js for scalable and modular architectures.
   </li>
     <li>
-    Integrating databases like MongoDB with JavaScript for seamless data operations.
+    Integrating databases like MongoDB with JavaScript, TypeScript for seamless data operations.
   </li>
     <li>
   Implementing secure authentication and handling sensitive data.  
