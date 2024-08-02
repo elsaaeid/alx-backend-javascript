@@ -1,8 +1,8 @@
 
 
-<h2>the Power of Backend JavaScript</h2>
+<h2>the Power of Backend JavaScript, TypeScript</h2>
 <p>
-  JavaScript has evolved to dominate backend development, thanks to technologies like Node.js. Explore the benefits of backend JavaScript and how it revolutionizes development.
+  JavaScript, TypeScript has evolved to dominate backend development, thanks to technologies like Node.js. Explore the benefits of backend JavaScript, TypeScript and how it revolutionizes development.
 </p>
 
 <h3>Topics Covered:</h3>
@@ -20,7 +20,7 @@
   Implementing secure authentication and handling sensitive data.  
   </li>
   <li>
-    Testing, debugging, deployment, and scaling options for backend JavaScript applications.
+    Testing, debugging, deployment, and scaling options for backend JavaScript, TypeScript applications.
   </li>
 </ul>
 
