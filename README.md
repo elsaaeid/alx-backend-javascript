@@ -4,7 +4,7 @@
 <p>
   JavaScript, TypeScript has evolved to dominate backend development, thanks to technologies like Node.js. Explore the benefits of backend JavaScript, TypeScript and how it revolutionizes development.
 </p>
-<img src="./image.png" />
+<img src="./image.jpg" />
 <h3>Topics Covered:</h3>
 <ul>
   <li>
