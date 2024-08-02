@@ -1,4 +1,4 @@
-# alx-backend-javascript
+
 
 <h2>the Power of Backend JavaScript</h2>
 <p>
@@ -21,5 +21,32 @@
   </li>
   <li>
     Testing, debugging, deployment, and scaling options for backend JavaScript applications.
+  </li>
+</ul>
+
+
+<h3>
+  Tasks
+</h3>
+<ul>
+  <li>
+    <a href="https://github.com/elsaaeid/alx-backend-javascript/tree/master/0x01-ES6_promise">
+0x01-ES6_promise
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/elsaaeid/alx-backend-javascript/tree/master/0x02-ES6_classes">
+0x02-ES6_classes
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/elsaaeid/alx-backend-javascript/tree/master/0x03-ES6_data_manipulation">
+0x03-ES6_data_manipulation
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/elsaaeid/alx-backend-javascript/tree/master/0x04-TypeScript">
+0x04-TypeScript
+    </a>
   </li>
 </ul>
