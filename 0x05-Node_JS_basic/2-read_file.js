@@ -10,7 +10,7 @@ function countStudents(path) {
     for (const line of lines) {
       if (line.trim() !== '' && i > 0) {
         countStudents += 1;
-        const [field, fname, lname, age] = line.split(','); // eslint-disable-line
+        const [fname, lname, age, field] = line.split(','); // eslint-disable-line
         if (!fields[field]) {
           fields[field] = {
             count: 1,
