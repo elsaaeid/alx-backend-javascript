@@ -1,15 +1,12 @@
 /**
  * Create a more complex HTTP server using Node's HTTP module
  */
-
 const http = require('http');
 const url = require('url');
 // Import the countStudents function
 const countStudents = require('./3-read_file_async');
-
 // Get file if arguement was passed
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
-
 // HTTP SERVER
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url, true);
