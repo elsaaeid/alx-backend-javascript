@@ -10,7 +10,7 @@ function countStudents(filePath) {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const lines = fileContent.split('\n').filter(line => line.trim() !== '');
     const studentRecords = lines.slice(1); // Exclude header line
-    const totalStudents = studentRecords.length;
+    const numberOfStudents = studentRecords.length;
     const studentGroups = {};
 
     // Process each student record
@@ -27,7 +27,7 @@ function countStudents(filePath) {
       }
     });
 
-    console.log(`Number of students: ${totalStudents}`);
+    console.log(`Number of students: ${numberOfStudents}`);
 
     // Log the number of students in each field
     for (const [field, data] of Object.entries(studentGroups)) {
