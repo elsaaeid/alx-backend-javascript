@@ -1,37 +1,42 @@
+/**
+ * Create a more complex HTTP server using Node's HTTP module
+ */
+
+const fs = require('fs');
 const http = require('http');
-const countStudents = require('./3-read_file_async'); // Import the countStudents function
+const url = require('url');
+// Import the countStudents function
+const countStudents = require('./3-read_file_async');
 
-// Create an HTTP server
-const app = http.createServer(async (req, res) => {
-    // Set the response HTTP header with HTTP status and Content type
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
+// Get file if arguement was passed
+const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
 
-    if (req.url === '/') {
-        // Respond to the root path
-        res.end('Hello Holberton School!\n');
-    } else if (req.url === '/students') {
-        // Respond to the /students path
-        res.write('This is the list of our students\n');
-        try {
-            // Call countStudents with the database file path
-            await countStudents(process.argv[2]); // Pass the database file as an argument
-            res.end(); // End the response
-        } catch (error) {
-            res.write(error.message); // Write the error message if there's an issue
-            res.end(); // End the response
-        }
-    } else {
-        // Handle other paths
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Not Found\n');
-    }
+// HTTP SERVER
+const server = http.createServer((req, res) => {
+  const { pathname } = url.parse(req.url, true);
+
+  if (pathname === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
+  } else if (pathname === '/students') {
+    const studentReport = [];
+    studentReport.push('This is the list of our students');
+
+    countStudents(DB_FILE)
+      .then((data) => {
+        studentReport.push(data);
+        res.write(studentReport.join('\n'));
+        res.end();
+      })
+      .catch((err) => {
+        studentReport.push(err instanceof Error ? err.message : err.toString());
+        res.write(studentReport.join('\n'));
+        res.end();
+      });
+  }
 });
 
-// Make the server listen on port 1245
 const PORT = 1245;
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+const app = server.listen(PORT, () => process.stdout.write(`Listening on port ${PORT}\n`));
 
-// Export the app
 module.exports = app;
