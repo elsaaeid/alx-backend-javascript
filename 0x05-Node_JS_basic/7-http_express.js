@@ -27,6 +27,7 @@ app.get('/students', (req, res) => {
     });
 });
 // Make the server listen on port 1245
-app.listen(PORT, () => process.stdout.write(`Listening on port ${PORT}\n`));
-
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
 module.exports = app;
