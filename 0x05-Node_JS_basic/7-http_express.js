@@ -1,34 +1,35 @@
+/**
+ * Create a more complex HTTP server using Express
+ */
 const express = require('express');
+const fs = require('fs');
+// Import the countStudents function
 const countStudents = require('./3-read_file_async');
-
-
-// Create an instance of an Express application
 const app = express();
 
-// Define the root endpoint
+// Get file if arguement was passed
+const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
+
+
 app.get('/', (req, res) => {
-    res.send('Hello Holberton School!\n');
+  res.send('Hello Holberton School!');
 });
 
-// Define the /students endpoint
-app.get('/students', async (req, res) => {
-    res.write('This is the list of our students\n');
-    try {
-        // Call countStudents with the database file path
-        await countStudents(process.argv[2]); // Pass the database file as an argument
-        res.end(); // End the response
-    } catch (error) {
-        res.write(error.message); // Write the error message if there's an issue
-        res.end(); // End the response
-    }
+app.get('/students', (req, res) => {
+  const studentReport = [];
+  studentReport.push('This is the list of our students');
+  countStudents(DB_FILE)
+    .then((data) => {
+      studentReport.push(data);
+      res.send(studentReport.join('\n'));
+    })
+    .catch((err) => {
+      studentReport.push(err instanceof Error ? err.message : err.toString());
+      res.send(studentReport.join('\n'));
+    });
 });
 
-
-// Make the server listen on port 1245
 const PORT = 1245;
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
-// Export the app
 module.exports = app;
