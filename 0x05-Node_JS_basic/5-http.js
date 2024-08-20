@@ -36,6 +36,8 @@ const server = http.createServer((req, res) => {
 });
 
 // Make the server listen on port 1245
-const app = server.listen(PORT, () => process.stdout.write(`Listening on port ${PORT}\n`));
+server.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
 
 module.exports = app;
