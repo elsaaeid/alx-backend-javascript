@@ -39,16 +39,7 @@ const countStudents = (filePath) => {
     }
 
   } catch (err) {
-    // Check if the file exists
-    if (!fs.existsSync(filePath)) {
-      throw new Error('Cannot load the database');
-    }
-
-    // Check if the path is a file
-    if (!fs.statSync(filePath).isFile()) {
-      throw new Error('Cannot load the database');
-    }
-  }
+    throw new Error('Cannot loadthe database');
 };
 
 module.exports = countStudents;
