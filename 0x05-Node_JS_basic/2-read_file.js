@@ -6,7 +6,7 @@ const fs = require('fs');
 function countStudents(filePath) {
   try {
     // Attempt to read the file data asynchronously
-    const fileContent = await fs.readFile(filePath, 'utf8');
+    const fileContent = fs.readFile(filePath, 'utf8');
     const lines = fileContent.split('\n').filter((line) => line.trim() !== '');
     const studentRecords = lines.slice(1); // Exclude header line
     const totalStudents = studentRecords.length;
