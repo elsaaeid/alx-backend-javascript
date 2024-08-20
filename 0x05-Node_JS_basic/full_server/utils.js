@@ -21,18 +21,19 @@ const readDatabase = (filePath) => new Promise((resolve, reject) => {
           .split('\n');
         const studentGroups = {};
         const FieldNames = fileLines[0].split(',');
+        const studentPropertyNames = FieldNames
           .slice(0, FieldNames.length - 1);
 
         for (const line of fileLines.slice(1)) {
           const studentRecord = line.split(',');
-          const studentPropValues = studentRecord
+          const studentPropertyValues = studentRecord
             .slice(0, studentRecord.length - 1);
           const field = studentRecord[studentRecord.length - 1];
           if (!Object.keys(studentGroups).includes(field)) {
             studentGroups[field] = [];
           }
-          const studentEntries = FieldNames
-            .map((propName, idx) => [propName, studentPropValues[idx]]);
+          const studentEntries = studentPropertyName
+            .map((PropertyName, idx) => [PropertyName, studentPropertyValues[idx]]);
           studentGroups[field].push(Object.fromEntries(studentEntries));
         }
         resolve(studentGroups);
