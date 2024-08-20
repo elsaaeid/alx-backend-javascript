@@ -2,16 +2,6 @@ const fs = require('fs');
 
 const countStudents = (filePath) => {
   try {
-    // Check if the file exists
-    if (!fs.existsSync(filePath)) {
-      throw new Error('Cannot load the database');
-    }
-
-    // Check if the path is a file
-    if (!fs.statSync(filePath).isFile()) {
-      throw new Error('Cannot load the database');
-    }
-
     // Read the file and split into lines
     const lines = fs.readFileSync(filePath, 'utf-8').trim().split('\n');
     const studentGroups = {};
@@ -48,9 +38,16 @@ const countStudents = (filePath) => {
       );
     }
 
-  } catch (error) {
-    // Handle errors gracefully
-    console.error(error.message);
+  } catch (err) {
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      throw new Error('Cannot load the database');
+    }
+
+    // Check if the path is a file
+    if (!fs.statSync(filePath).isFile()) {
+      throw new Error('Cannot load the database');
+    }
   }
 };
 
