@@ -5,10 +5,17 @@ function countStudents(path) {
     // Attempt to read the file synchronously
     const data = fs.readFileSync(path, 'utf8');
 
-    // Split the data into lines and filter out empty lines
-    const lines = data.split('\n').filter(line => line.trim() !== '');
+    /*
+    Split the data into lines and
+    filter out empty lines
+    */
+    const lines = data.split('\n')
+      .filter(line => line.trim() !== '');
 
-    // Initialize a map to hold the counts and names of students by field
+    /*
+    Initialize a map to hold the
+    counts and names of students by field
+    */
 
     const studentCounts = {};
 
