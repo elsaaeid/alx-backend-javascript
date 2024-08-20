@@ -5,14 +5,11 @@ const fs = require('fs').promises;
  * from a CSV file asynchronously.
  * @param {string} filePath - Path to the database file.
  */
-
-
 const countStudents = async (filePath) => {
   try {
     // Attempt to read the file data asynchronously
     const fileContent = await fs.readFile(filePath, 'utf8');
-    const lines = fileContent.split('\n')
-    .filter(line => line.trim() !== '');
+    const lines = fileContent.split('\n').filter((line) => line.trim() !== '');
     const studentRecords = lines.slice(1); // Exclude header line
     const totalStudents = studentRecords.length;
     const studentGroups = {};
@@ -24,8 +21,7 @@ const countStudents = async (filePath) => {
 
       // Initialize the field group if it doesn't exist
       if (!studentGroups[field]) {
-        studentGroups[field] = { count: 1,
-        firstNames: [studentData[0].trim()] };
+        studentGroups[field] = { count: 1, firstNames: [studentData[0].trim()] };
       } else {
         studentGroups[field].count += 1; // Increment count
         studentGroups[field].firstNames.push(studentData[0].trim());
@@ -38,9 +34,7 @@ const countStudents = async (filePath) => {
     // Log the number of students in each field
     for (const [field, data] of Object.entries(studentGroups)) {
       const firstNamesList = data.firstNames.join(', ');
-      console.log(
-        `Number of students in ${field}: ${data.count}. List: ${firstNamesList}`
-      );
+      console.log(`Number of students in ${field}: ${data.count}. List: ${firstNamesList}`);
     }
   } catch (error) {
     throw new Error('Cannot load the database');
