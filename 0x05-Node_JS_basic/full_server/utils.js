@@ -5,8 +5,7 @@ const fs = require('fs');
  * @param {string} path - The path to the database file.
  * @returns {Promise<Object>} - A promise that resolves with student data grouped by field.
  */
-const readDatabase = (path) => {
-  return new Promise((resolve, reject) => {
+const readDatabase = (path) => new Promise((resolve, reject) => {
     if (!path) {
       return reject(new Error('Cannot load the database'));
     }
@@ -48,6 +47,5 @@ const readDatabase = (path) => {
       resolve(studentGroups);
     });
   });
-};
 
 module.exports = readDatabase;
