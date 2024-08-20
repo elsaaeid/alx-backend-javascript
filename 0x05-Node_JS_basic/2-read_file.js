@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 /**
  * Counts the number of students in each field from a CSV file.
  * @param {string} filePath - Path to the database file.
