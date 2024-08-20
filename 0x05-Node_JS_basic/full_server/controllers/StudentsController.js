@@ -3,7 +3,7 @@ const readDatabase = require('../utils');
 class StudentsController {
   static getAllStudents(req, res) {
     const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
-    readDatabase(DB_file)
+    readDatabase(DB_FILE)
       .then((data) => {
         const printData = [];
         printData.push('This is the list of our students');
@@ -15,7 +15,7 @@ class StudentsController {
       .catch((err) => { res.send(err.message); });
   }
 
-  static getAllStudentsByMajor(request, response) {
+  static getAllStudentsByMajor(req, res) {
     if (!['SWE', 'CS'].includes(req.params.major)) res.status(500).send('Major parameter must be CS or SWE');
     else {
       readDatabase(process.argv[2])
