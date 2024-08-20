@@ -7,7 +7,7 @@ const fs = require('fs');
 function countStudents(filePath) {
   try {
     // Read the CSV file synchronously
-    const fileContent = fs.readFile(filePath, 'utf8');
+    const fileContent = fs.readFileSync(filePath, 'utf8');
     const lines = fileContent.split('\n').filter((line) => line.trim() !== '');
     const studentRecords = lines.slice(1); // Exclude header line
     const totalStudents = studentRecords.length;
