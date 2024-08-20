@@ -4,8 +4,6 @@ const fs = require('fs');
  * @param {string} path - Path to the database file.
  */
 
-const fs = require('fs');
-
 function countStudents(path) {
   try {
     const results = fs.readFileSync(path, { encoding: 'utf8' }).split(/\r?\n/);
