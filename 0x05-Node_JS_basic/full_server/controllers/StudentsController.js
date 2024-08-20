@@ -2,7 +2,7 @@ const readDatabase = require('../utils');
 
 class StudentsController {
   static getAllStudents(req, res) {
-    const DB_file = process.argv.length > 2 ? process.argv[2] : '';
+    const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
     readDatabase(DB_file)
       .then((data) => {
         const printData = [];
