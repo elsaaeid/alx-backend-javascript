@@ -32,7 +32,7 @@ const readDatabase = (filePath) => new Promise((resolve, reject) => {
           if (!Object.keys(studentGroups).includes(field)) {
             studentGroups[field] = [];
           }
-          const studentEntries = studentPropertyName
+          const studentEntries = studentPropertyNames
             .map((PropertyName, idx) => [PropertyName, studentPropertyValues[idx]]);
           studentGroups[field].push(Object.fromEntries(studentEntries));
         }
