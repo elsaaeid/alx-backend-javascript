@@ -5,39 +5,34 @@ const fs = require('fs');
  */
 function countStudents(filePath) {
   try {
-    const lines = fs.readFileSync(filePath, { encoding: 'utf8' }).split(/\r?\n/);
-    let i = 0;
-    let countStudents = 0;
-    const fields = {};
+    // Attempt to read the file data asynchronously
+    const fileContent = await fs.readFile(filePath, 'utf8');
+    const lines = fileContent.split('\n').filter((line) => line.trim() !== '');
+    const studentRecords = lines.slice(1); // Exclude header line
+    const totalStudents = studentRecords.length;
+    const studentGroups = {};
 
-    // Use a while loop to iterate through the lines
-    while (i < lines.length) {
-      const line = lines[i];
-      if (line.trim() !== '' && i > 0) {
-        countStudents += 1;
-        const [fname, lname, age, field] = line.split(','); // eslint-disable-line
-        if (!fields[field]) {
-          fields[field] = {
-            count: 1,
-            students: [fname],
-          };
-        } else {
-          const newCount = fields[field].count + 1;
-          const newStudents = fields[field].students.concat(fname);
-          fields[field] = {
-            count: newCount,
-            students: newStudents,
-          };
-        }
+    // Process each student record
+    studentRecords.forEach((record) => {
+      const studentData = record.split(',');
+      const field = studentData[studentData.length - 1].trim();
+
+      // Initialize the field group if it doesn't exist
+      if (!studentGroups[field]) {
+        studentGroups[field] = { count: 1, firstNames: [studentData[0].trim()] };
+      } else {
+        studentGroups[field].count += 1; // Increment count
+        studentGroups[field].firstNames.push(studentData[0].trim());
       }
-      i += 1; // Increment the index
-    }
+    });
 
-    console.log(`Number of students: ${countStudents}`);
-    for (const field of Object.keys(fields)) {
-      const studentsNum = fields[field].count;
-      const names = fields[field].students.join(', ');
-      console.log(`Number of students in ${field}: ${studentsNum}. List: ${names}`);
+    // Log the total number of students
+    console.log(`Number of students: ${totalStudents}`);
+
+    // Log the number of students in each field
+    for (const [field, data] of Object.entries(studentGroups)) {
+      const firstNamesList = data.firstNames.join(', ');
+      console.log(`Number of students in ${field}: ${data.count}. List: ${firstNamesList}`);
     }
   } catch (error) {
     throw new Error('Cannot load the database');
