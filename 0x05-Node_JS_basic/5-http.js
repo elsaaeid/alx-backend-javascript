@@ -2,7 +2,6 @@
  * Create a more complex HTTP server using Node's HTTP module
  */
 
-const fs = require('fs');
 const http = require('http');
 const url = require('url');
 // Import the countStudents function
