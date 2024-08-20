@@ -4,9 +4,11 @@ const fs = require('fs');
  * @param {string} filePath - Path to the database file.
  */
 
-function countStudents(filePath) {
+const fs = require('fs');
+
+function countStudents(path) {
   try {
-    const results = fs.readFileSync(filePath, { encoding: 'utf8' }).split(/\r?\n/);
+    const results = fs.readFileSync(path, { encoding: 'utf8' }).split(/\r?\n/);
     const lines = results;
     let i = 0;
     let countStudents = 0;
@@ -15,7 +17,7 @@ function countStudents(filePath) {
     for (const line of lines) {
       if (line.trim() !== '' && i > 0) {
         countStudents += 1;
-        const [fname, field] = line.split(',');
+        const [fname, lname, age, field] = line.split(','); // eslint-disable-line
         if (!fields[field]) {
           fields[field] = {
             count: 1,
@@ -35,9 +37,9 @@ function countStudents(filePath) {
 
     console.log(`Number of students: ${countStudents}`);
     for (const field of Object.keys(fields)) {
-      const studentsNum = fields[field].count;
+      const n = fields[field].count;
       const names = fields[field].students.join(', ');
-      console.log(`Number of students in ${field}: ${studentsNum}. List: ${names}`);
+      console.log(`Number of students in ${field}: ${n}. List: ${names}`);
     }
   } catch (error) {
     throw new Error('Cannot load the database');
