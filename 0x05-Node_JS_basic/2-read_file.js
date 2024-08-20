@@ -1,50 +1,57 @@
 const fs = require('fs');
 
-function countStudents(path) {
+const countStudents = (filePath) => {
   try {
-    // Attempt to read the file synchronously
-    const data = fs.readFileSync(path, 'utf8');
-
-    /*
-    Split the data into lines and
-    filter out empty lines
-    */
-    const lines = data.split('\n')
-      .filter(line => line.trim() !== '');
-
-    /*
-    Initialize a map to hold the
-    counts and names of students by field
-    */
-
-    const studentCounts = {};
-
-    // Process each line (skip the header)
-    for (let i = 1; i < lines.length; i++) {
-      const [firstName, field] = lines[i].split(',');
-      if (field) {
-        // Initialize the field if it doesn't exist
-        if (!studentCounts[field]) {
-          studentCounts[field] = { count: 0, names: [] };
-        }
-        // Increment the count and add the student's name
-        studentCounts[field].count += 1;
-        studentCounts[field].names.push(firstName);
-      }
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      throw new Error('Cannot load the database');
     }
 
-    // Log the total number of students
-    const totalStudents = lines.length - 1; // Exclude header
+    // Check if the path is a file
+    if (!fs.statSync(filePath).isFile()) {
+      throw new Error('Cannot load the database');
+    }
+
+    // Read the file and split into lines
+    const lines = fs.readFileSync(filePath, 'utf-8').trim().split('\n');
+    const studentGroups = {};
+    const headerFields = lines[0].split(',');
+    const studentPropertyNames = headerFields.slice(0, headerFields.length - 1);
+
+    // Process each student record
+    for (const line of lines.slice(1)) {
+      const studentRecord = line.split(',');
+      const studentValues = studentRecord.slice(0, studentRecord.length - 1);
+      const field = studentRecord[studentRecord.length - 1];
+
+      // Initialize the field group if it doesn't exist
+      if (!studentGroups[field]) {
+        studentGroups[field] = [];
+      }
+
+      // Create an object for the student and add it to the group
+      const studentEntries = studentPropertyNames.map((propertyName, index) =>
+        [propertyName, studentValues[index]]);
+      studentGroups[field].push(Object.fromEntries(studentEntries));
+    }
+
+    // Calculate total number of students
+    const totalStudents = Object.values(studentGroups)
+      .reduce((total, group) => total + group.length, 0);
     console.log(`Number of students: ${totalStudents}`);
 
     // Log the number of students in each field
-    for (const [field, { count, names }] of Object.entries(studentCounts)) {
-      console.log(`Number of students in ${field}: ${count}. List: ${names.join(', ')}`);
+    for (const [field, group] of Object.entries(studentGroups)) {
+      const studentNames = group.map(student => student.firstname).join(', ');
+      console.log(
+        `Number of students in ${field}: ${group.length}. List: ${studentNames}`
+      );
     }
+
   } catch (error) {
-    // If the file cannot be read, throw an error
-    throw new Error('Cannot load the database');
+    // Handle errors gracefully
+    console.error(error.message);
   }
-}
+};
 
 module.exports = countStudents;
