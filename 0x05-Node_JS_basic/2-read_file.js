@@ -9,7 +9,7 @@ function countStudents(filePath) {
     // Read the file data
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const lines = fileContent.split('\n').filter(line => line.trim() !== '');
-    const studentRecords = lines.slice(-1); // Exclude header line
+    const studentRecords = lines.slice(1); // Exclude header line
     const totalStudents = studentRecords.length;
     const studentGroups = {};
 
