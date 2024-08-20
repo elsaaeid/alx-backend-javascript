@@ -1,40 +1,53 @@
 const fs = require('fs');
 
-const readDatabase = (path) => new Promise((resolve, reject) => {
-  fs.readFile(path, (error, csvData) => {
-    if (error) {
-      reject(Error('Cannot load the database'));
-    }
-    if (csvData) {
-      const fields = {};
-      const dataShow = {};
-      let data = csvData.toString().split('\n');
-      data = data.filter((element) => element.length > 0);
-
-      data.shift();
-      data.forEach((element) => {
-        if (element.length > 0) {
-          const row = element.split(',');
-          if (row[3] in fields) {
-            fields[row[3]].push(row[0]);
-          } else {
-            fields[row[3]] = [row[0]];
-          }
+/**
+ * Reads the database file and organizes student data by field.
+ * @param {string} path - The path to the database file.
+ * @returns {Promise<Object>} - A promise that resolves with student data grouped by field.
+ */
+const readDatabase = (path) => {
+    return new Promise((resolve, reject) => {
+        if (!path) {
+            return reject(new Error('Cannot load the database'));
         }
-      });
-      for (const field in fields) {
-        if (field) {
-          const list = fields[field];
-          dataShow[field] = {
-            list: `List: ${list.toString().replace(/,/g, ', ')}`,
-            number: list.length,
-          };
-        }
-      }
 
-      resolve(dataShow);
-    }
-  });
-});
+        fs.readFile(path, 'utf8', (err, data) => {
+            if (err) {
+                return reject(new Error('Cannot load the database'));
+            }
+
+            const lines = data.split('\n').filter(line => line.trim() !== '');
+            const studentRecords = lines.slice(1); // Exclude header line
+            const totalStudents = studentRecords.length;
+            const studentGroups = {};
+
+            // Process each student record
+            studentRecords.forEach((record) => {
+                const studentData = record.split(',');
+                const firstName = studentData[0].trim();
+                const field = studentData[studentData.length - 1].trim();
+
+                // Initialize the field group if it doesn't exist
+                if (!studentGroups[field]) {
+                    studentGroups[field] = { count: 1, firstNames: [firstName] };
+                } else {
+                    studentGroups[field].count += 1; // Increment count
+                    studentGroups[field].firstNames.push(firstName);
+                }
+            });
+
+            // Log the total number of students
+            console.log(`Number of students: ${totalStudents}`);
+
+            // Log the number of students in each field
+            for (const [field, data] of Object.entries(studentGroups)) {
+                const firstNamesList = data.firstNames.join(', ');
+                console.log(`Number of students in ${field}: ${data.count}. List: ${firstNamesList}`);
+            }
+
+            resolve(studentGroups);
+        });
+    });
+};
 
 module.exports = readDatabase;
