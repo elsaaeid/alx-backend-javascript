@@ -36,8 +36,8 @@ function countStudents(filePath) {
         `Number of students in ${field}: ${data.count}. List: ${firstNamesList}`
       );
     }
-  } catch (error) {
-    console.error('Cannot load the database:', error.message);
+  } catch (err) {
+    throw new Error('Cannot load the database');
   }
 };
 
