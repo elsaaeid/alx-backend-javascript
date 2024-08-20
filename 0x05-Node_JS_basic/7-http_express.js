@@ -6,6 +6,7 @@ const express = require('express');
 const countStudents = require('./3-read_file_async');
 
 const app = express();
+const PORT = 1245;
 // Get file if arguement was passed
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
 app.get('/', (req, res) => {
@@ -25,8 +26,7 @@ app.get('/students', (req, res) => {
       res.send(studentReport.join('\n'));
     });
 });
-
-const PORT = 1245;
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+// Make the server listen on port 1245
+app.listen(PORT, () => process.stdout.write(`Listening on port ${PORT}\n`));
 
 module.exports = app;
