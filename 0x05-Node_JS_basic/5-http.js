@@ -1,30 +1,42 @@
+/**
+ * Create a more complex HTTP server using Node's HTTP module
+ */
 const http = require('http');
+const url = require('url');
+// Import the countStudents function
 const countStudents = require('./3-read_file_async');
 
 // Port
 const PORT = 1245;
 // Get file if arguement was passed
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
-const app = http.createServer(async (req, res) => {
-  res.statusCode = 200;
-  if (req.url === '/') {
-    res.end('Hello Holberton School!');
-  } else if (req.url === '/students') {
-    let data = 'This is the list of our students\n';
-    await countStudents(DB_FILE)
-      .then((msg) => {
-        data += msg;
-        res.end(data);
+// HTTP SERVER
+const server = http.createServer((req, res) => {
+  const { pathname } = url.parse(req.url, true);
+
+  if (pathname === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
+  } else if (pathname === '/students') {
+    const studentReport = [];
+    studentReport.push('This is the list of our students');
+
+    countStudents(DB_FILE)
+      .then((data) => {
+        studentReport.push(data);
+        res.write(studentReport.join('\n'));
+        res.end();
       })
       .catch((err) => {
-        data += err.message;
-        res.end(data);
+        studentReport.push(err instanceof Error ? err.message : err.toString());
+        res.write(studentReport.join('\n'));
+        res.end();
       });
   }
 });
 
-app.listen(port, hostname, () => {
-  console.log(`Server running on port ${port}`);
+// Make the server listen on port 1245
+const app = server.listen(port, hostname, () => {
+  console.log(`Server running on ${PORT}`);
 });
-
 module.exports = app;
