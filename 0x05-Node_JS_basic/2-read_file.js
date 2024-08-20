@@ -1,16 +1,9 @@
 const fs = require('fs');
-/**
- * Counts the number of students in
- * each field from a CSV file.
- * @param {string} filePath - Path to the database file.
- */
 
-
-
-function countStudents(filePath) {
+function countStudents(path) {
   try {
-    const lines = fs.readFileSync(filePath,
-    { encoding: 'utf8' }).split(/\r?\n/);
+    const results = fs.readFileSync(path, { encoding: 'utf8' }).split(/\r?\n/);
+    const lines = results;
     let i = 0;
     let countStudents = 0;
     const fields = {};
@@ -18,7 +11,7 @@ function countStudents(filePath) {
     for (const line of lines) {
       if (line.trim() !== '' && i > 0) {
         countStudents += 1;
-        const [fname, lname, age, field] = line.split(',');
+        const [fname, lname, age, field] = line.split(','); // eslint-disable-line
         if (!fields[field]) {
           fields[field] = {
             count: 1,
