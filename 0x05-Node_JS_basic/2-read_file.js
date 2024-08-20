@@ -20,7 +20,7 @@ function countStudents(filePath) {
 
       // Initialize the field group if it doesn't exist
       if (!studentGroups[field]) {
-        studentGroups[field] = { count: 0, firstNames: [studentData[0].trim()] };
+        studentGroups[field] = { count: 1, firstNames: [studentData[0].trim()] };
       } else {
         studentGroups[field].count += 1; // Increment count
         studentGroups[field].firstNames.push(studentData[0].trim());
