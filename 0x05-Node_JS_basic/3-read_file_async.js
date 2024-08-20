@@ -4,8 +4,9 @@ const fs = require('fs').promises;
  * Counts the number of students in each field
  * from a CSV file asynchronously.
  * @param {string} filePath - Path to the database file.
- * @returns {Promise<void>}
  */
+
+
 const countStudents = async (filePath) => {
   try {
     // Attempt to read the file data asynchronously
