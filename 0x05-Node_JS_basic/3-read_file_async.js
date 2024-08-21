@@ -51,6 +51,7 @@ const countStudents = (filePath) => new Promise((resolve, reject) => {
       ].join(' '));
     }
     resolve(reports.join('\n'));
+    console.log(reports.join('\n'));
   });
 });
 module.exports = countStudents;
