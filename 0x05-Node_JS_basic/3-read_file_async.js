@@ -50,8 +50,8 @@ const countStudents = (filePath) => new Promise((resolve, reject) => {
         group.map((student) => student.firstname).join(', '),
       ].join(' '));
     }
-    resolve(reports.join('\n'));
     console.log(reports.join('\n'));
+    resolve(reports.join('\n'));
   });
 });
 module.exports = countStudents;
