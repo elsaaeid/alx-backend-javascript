@@ -56,7 +56,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   });
 });
 
-
 // HTTP SERVER
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url, true);
