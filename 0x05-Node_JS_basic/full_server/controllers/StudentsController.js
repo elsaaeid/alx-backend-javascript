@@ -12,10 +12,10 @@ class StudentsController {
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .forEach((field) => {
           const studentsList = studentGroups[field].map((student) => {
-            student.firstname).join(', ');
-          };
+            student.firstname
+          )};
           reports.push(
-            `Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList}`
+            `Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList}.join(', ')`
           );
         });
 
