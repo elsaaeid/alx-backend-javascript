@@ -15,6 +15,7 @@ const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url, true);
 
   if (pathname === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write('Hello Holberton School!');
     res.end();
   } else if (pathname === '/students') {
@@ -24,14 +25,20 @@ const server = http.createServer((req, res) => {
     countStudents(DB_FILE)
       .then((data) => {
         studentReport.push(data);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.write(studentReport.join('\n'));
         res.end();
       })
       .catch((err) => {
         studentReport.push(err instanceof Error ? err.message : err.toString());
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.write(studentReport.join('\n'));
         res.end();
       });
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.write('Not Found');
+    res.end();
   }
 });
 
