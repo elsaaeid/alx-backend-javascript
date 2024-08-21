@@ -10,7 +10,10 @@ class StudentsController {
       Object.keys(studentGroups)
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())) // Sort fields case-insensitively
         .forEach((field) => {
-          reports.push(`Number of students in ${field}: ${studentGroups[field].length}. List: ${studentGroups[field].map(student => student.firstname).join(', ')}`);
+          const studentsList = studentGroups[field].map(student => student.firstname).join(', ');
+          reports.push(
+            `Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList}`
+          );
         });
 
       res.status(200).send(reports.join('\n'));
