@@ -8,12 +8,12 @@ class StudentsController {
       const reports = ['This is the list of our students'];
 
       Object.keys(studentGroups)
-      // Sort fields case-insensitively
-      .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-      .forEach((field) => {
-        const studentsList = studentGroups[field].map((student) => student.firstname); // Corrected line
-        reports.push(`Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList.join(', ')}`);
-      });
+        // Sort fields case-insensitively
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+        .forEach((field) => {
+          const studentsList = studentGroups[field].map((student) => student.firstname); // Corrected line
+          reports.push(`Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList.join(', ')}`);
+        });
 
       res.status(200).send(reports.join('\n'));
     } catch (error) {
