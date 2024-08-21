@@ -30,11 +30,10 @@ class StudentsController {
       const studentGroups = await readDatabase(DB_FILE);
       const studentsInMajor = studentGroups[major] || [];
       const firstNames = studentsInMajor.map((student) => student.firstname).join(', ');
-      res.status(200).send(`List: ${firstNames}`);
-      return; // Ensure a consistent return
+
+      return res.status(200).send(`List: ${firstNames}`);
     } catch (error) {
-      res.status(500).send(error.message);
-      return; // Ensure a consistent return
+      return res.status(500).send(error.message);
     }
   }
 }
