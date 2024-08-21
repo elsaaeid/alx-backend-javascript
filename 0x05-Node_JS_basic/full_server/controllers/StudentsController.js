@@ -27,7 +27,7 @@ class StudentsController {
       return res.status(500).send('Major parameter must be CS or SWE');
     }
     try {
-      const studentGroups = await readDatabase(dbFilePath);
+      const studentGroups = await readDatabase(DB_FILE);
       const studentsInMajor = studentGroups[major] || [];
       const firstNames = studentsInMajor.map((student) => student.firstname).join(', ');
       res.status(200).send(`List: ${firstNames}`);
