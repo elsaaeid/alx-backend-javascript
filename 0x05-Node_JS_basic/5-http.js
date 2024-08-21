@@ -3,7 +3,6 @@
  */
 const http = require('http');
 const url = require('url');
-const fs = require('fs').promises;
 
 // Import the countStudents function
 const countStudents = require('./3-read_file_async');
