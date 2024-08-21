@@ -9,7 +9,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   if (!dataPath) {
     reject(new Error('Cannot load the database'));
     return; // Ensure we exit the function after rejection
-  }  
+  }
   fs.readFile(dataPath, (err, data) => {
     if (err) {
       reject(new Error('Cannot load the database'));
@@ -39,7 +39,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
         studentPropertyValues[idx],
       ]);
       studentGroups[field].push(Object.fromEntries(studentEntries));
-      
       index++; // Increment the index to move to the next line
     }
     const totalStudents = Object.values(studentGroups).reduce(
