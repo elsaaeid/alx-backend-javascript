@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const url = require('url');
 
 const PORT = 1245;
 const HOST = 'localhost';
@@ -59,55 +60,34 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   }
 });
 
-const SERVER_ROUTE_HANDLERS = [
-  {
-    route: '/',
-    handler(_, res) {
-      const responseText = 'Hello Holberton School!';
+// HTTP SERVER
+const server = http.createServer((req, res) => {
+  const { pathname } = url.parse(req.url, true);
 
-      res.setHeader('Content-Type', 'text/plain');
-      res.setHeader('Content-Length', responseText.length);
-      res.statusCode = 200;
-      res.write(Buffer.from(responseText));
-    },
-  },
-  {
-    route: '/students',
-    handler(_, res) {
-      const responseParts = ['This is the list of our students'];
+  if (pathname === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
+  } else if (pathname === '/students') {
+    const studentReport = [];
+    studentReport.push('This is the list of our students');
 
-      countStudents(DB_FILE)
-        .then((report) => {
-          responseParts.push(report);
-          const responseText = responseParts.join('\n');
-          res.setHeader('Content-Type', 'text/plain');
-          res.setHeader('Content-Length', responseText.length);
-          res.statusCode = 200;
-          res.write(Buffer.from(responseText));
-        })
-        .catch((err) => {
-          responseParts.push(err instanceof Error ? err.message : err.toString());
-          const responseText = responseParts.join('\n');
-          res.setHeader('Content-Type', 'text/plain');
-          res.setHeader('Content-Length', responseText.length);
-          res.statusCode = 200;
-          res.write(Buffer.from(responseText));
-        });
-    },
-  },
-];
-
-app.on('request', (req, res) => {
-  for (const routeHandler of SERVER_ROUTE_HANDLERS) {
-    if (routeHandler.route === req.url) {
-      routeHandler.handler(req, res);
-      break;
-    }
+    countStudents(DB_FILE)
+      .then((data) => {
+        studentReport.push(data);
+        res.write(studentReport.join('\n'));
+        res.end();
+      })
+      .catch((err) => {
+        studentReport.push(err instanceof Error ? err.message : err.toString());
+        res.write(studentReport.join('\n'));
+        res.end();
+      });
   }
 });
 
-app.listen(PORT, HOST, () => {
-  process.stdout.write(`Server listening at -> http://${HOST}:${PORT}\n`);
+// Make the server listen on port 1245
+const app = server.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
 
 module.exports = app;
