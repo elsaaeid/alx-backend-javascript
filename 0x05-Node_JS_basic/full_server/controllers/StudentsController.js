@@ -22,20 +22,23 @@ class StudentsController {
   }
 
   static async getAllStudentsByMajor(req, res) {
-    const major = req.params.major;
-
+    const dbFilePath = req.query.db || './database.csv'; // Get the database file path from query or default
+    const { major } = req.params; // Destructure major from req.params
+  
     if (!['CS', 'SWE'].includes(major)) {
       return res.status(500).send('Major parameter must be CS or SWE');
     }
-
+  
     try {
-      const studentGroups = await readDatabase(DB_FILE);
+      const studentGroups = await readDatabase(dbFilePath);
       const studentsInMajor = studentGroups[major] || [];
-      const firstNames = studentsInMajor.map(student => student.firstname).join(', ');
-
+      const firstNames = studentsInMajor.map((student) => student.firstname).join(', ');
+  
       res.status(200).send(`List: ${firstNames}`);
+      return; // Ensure a consistent return
     } catch (error) {
       res.status(500).send(error.message);
+      return; // Ensure a consistent return
     }
   }
 }
