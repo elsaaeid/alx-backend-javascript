@@ -5,12 +5,12 @@ const fs = require('fs').promises;
  * from a CSV file asynchronously.
  * @param {string} filePath - Path to the database file.
  */
-const countStudents = (dataPath) => new Promise((resolve, reject) => {
-  if (!dataPath) {
+const countStudents = (filePath) => new Promise((resolve, reject) => {
+  if (!filePath) {
     reject(new Error('Cannot load the database'));
     return; // Ensure we exit the function after rejection
   }
-  fs.readFile(dataPath, (err, data) => {
+  fs.readFile(filePath, (err, data) => {
     if (err) {
       reject(new Error('Cannot load the database'));
       return; // Ensure we exit the function after rejection
