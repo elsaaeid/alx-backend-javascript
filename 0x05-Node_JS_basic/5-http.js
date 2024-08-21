@@ -39,7 +39,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
         studentPropertyValues[idx],
       ]);
       studentGroups[field].push(Object.fromEntries(studentEntries));
-      index++; // Increment the index to move to the next line
+      index += 1;
     }
     const totalStudents = Object.values(studentGroups).reduce(
       (pre, cur) => (pre || []).length + cur.length,
