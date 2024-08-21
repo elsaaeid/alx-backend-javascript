@@ -5,53 +5,39 @@ const fs = require('fs').promises;
  * from a CSV file asynchronously.
  * @param {string} filePath - Path to the database file.
  */
-const countStudents = (filePath) => new Promise((resolve, reject) => {
-  if (!filePath) {
-    reject(new Error('Cannot load the database'));
-    return; // Ensure we exit the function after rejection
-  }
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      reject(new Error('Cannot load the database'));
-      return; // Ensure we exit the function after rejection
-    }
-
-    const reports = [];
-    const fileLines = data.toString('utf-8').trim().split('\n');
+const countStudents = async (filePath) => {
+  try {
+    // Attempt to read the file data asynchronously
+    const fileContent = await fs.readFile(filePath, 'utf8');
+    const lines = fileContent.split('\n').filter((line) => line.trim() !== '');
+    const studentRecords = lines.slice(1); // Exclude header line
+    const totalStudents = studentRecords.length;
     const studentGroups = {};
-    const FieldNames = fileLines[0].split(',');
-    const studentPropertyNames = FieldNames.slice(0, FieldNames.length - 1);
-    let index = 1; // Start from the second line (after header)
-    while (index < fileLines.length) {
-      const line = fileLines[index];
-      const studentRecord = line.split(',');
-      const studentPropertyValues = studentRecord.slice(0, studentRecord.length - 1);
-      const field = studentRecord[studentRecord.length - 1];
 
-      if (!Object.keys(studentGroups).includes(field)) {
-        studentGroups[field] = [];
+    // Process each student record
+    studentRecords.forEach((record) => {
+      const studentData = record.split(',');
+      const field = studentData[studentData.length - 1].trim();
+
+      // Initialize the field group if it doesn't exist
+      if (!studentGroups[field]) {
+        studentGroups[field] = { count: 1, firstNames: [studentData[0].trim()] };
+      } else {
+        studentGroups[field].count += 1; // Increment count
+        studentGroups[field].firstNames.push(studentData[0].trim());
       }
+    });
 
-      const studentEntries = studentPropertyNames.map((propertyName, idx) => [
-        propertyName,
-        studentPropertyValues[idx],
-      ]);
-      studentGroups[field].push(Object.fromEntries(studentEntries));
-      index += 1;
+    // Log the total number of students
+    console.log(`Number of students: ${totalStudents}`);
+
+    // Log the number of students in each field
+    for (const [field, data] of Object.entries(studentGroups)) {
+      const firstNamesList = data.firstNames.join(', ');
+      console.log(`Number of students in ${field}: ${data.count}. List: ${firstNamesList}`);
     }
-    const totalStudents = Object.values(studentGroups).reduce(
-      (pre, cur) => (pre || []).length + cur.length,
-    );
-    reports.push(`Number of students: ${totalStudents}`);
-    for (const [field, group] of Object.entries(studentGroups)) {
-      reports.push([
-        `Number of students in ${field}: ${group.length}.`,
-        'List:',
-        group.map((student) => student.firstname).join(', '),
-      ].join(' '));
-    }
-    console.log(reports.join('\n'));
-    resolve(reports.join('\n'));
-  });
-});
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
+};
 module.exports = countStudents;
