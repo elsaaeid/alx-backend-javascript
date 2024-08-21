@@ -22,7 +22,6 @@ class StudentsController {
   }
 
   static async getAllStudentsByMajor(req, res) {
-    const dbFilePath = req.query.db || './database.csv'; // Get the database file path from query or default
     const { major } = req.params; // Destructure major from req.params
   
     if (!['CS', 'SWE'].includes(major)) {
