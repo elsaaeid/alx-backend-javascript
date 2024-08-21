@@ -10,13 +10,11 @@ const readDatabase = (filePath) => new Promise((resolve, reject) => {
     reject(new Error('Cannot load the database'));
     return; // Ensure we exit the function after rejection
   }
-  
   fs.readFile(filePath, (err, data) => {
     if (err) {
       reject(new Error('Cannot load the database'));
       return; // Ensure we exit the function after rejection
     }
-    
     if (data) {
       const fileLines = data
         .toString('utf-8')
