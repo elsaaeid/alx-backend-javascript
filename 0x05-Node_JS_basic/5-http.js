@@ -21,8 +21,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
     const studentGroups = {};
     const FieldNames = fileLines[0].split(',');
     const studentPropertyNames = FieldNames.slice(0, FieldNames.length - 1);
-
-    // Replace the for...of loop with a while loop
     let index = 1; // Start from the second line (after header)
     while (index < fileLines.length) {
       const line = fileLines[index];
