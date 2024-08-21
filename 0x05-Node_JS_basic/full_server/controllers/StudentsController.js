@@ -8,7 +8,8 @@ class StudentsController {
       const reports = ['This is the list of our students'];
 
       Object.keys(studentGroups)
-        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())) // Sort fields case-insensitively
+        // Sort fields case-insensitively
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         .forEach((field) => {
           const studentsList = studentGroups[field].map(student => student.firstname).join(', ');
           reports.push(
