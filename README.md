@@ -54,4 +54,9 @@
 0x05-Node_JS_basic
     </a>
   </li>
+  <li>
+    <a href="https://github.com/elsaaeid/alx-backend-javascript/tree/master/0x06-unittests_in_js">
+0x06-unittests_in_js
+    </a>
+  </li>
 </ul>
