@@ -6,43 +6,40 @@ const fs = require('fs');
  * @returns {Promise<Object>} - A promise that resolves with student data grouped by field.
  */
 const readDatabase = (filePath) => new Promise((resolve, reject) => {
-  if (!filePath) {
-    reject(new Error('Cannot load the database'));
-    return; // Ensure we exit the function after rejection
-  }
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      reject(new Error('Cannot load the database'));
-      return; // Ensure we exit the function after rejection
+  fs.readFile(filePath, (error, csvData) => {
+    if (error) {
+      reject(Error('Cannot load the database'));
     }
-    if (data) {
-      const fileLines = data
-        .toString('utf-8')
-        .trim()
-        .split('\n');
-      const studentGroups = {};
-      const FieldNames = fileLines[0].split(',');
-      const studentPropertyNames = FieldNames
-        .slice(0, FieldNames.length - 1);
-      let index = 1; // Start from the second line (after header)
-      while (index < fileLines.length) {
-        const line = fileLines[index];
-        const studentRecord = line.split(',');
-        const studentPropertyValues = studentRecord
-          .slice(0, studentRecord.length - 1);
-        const field = studentRecord[studentRecord.length - 1];
+    if (csvData) {
+      const fields = {};
+      const dataShow = {};
+      let data = csvData.toString().split('\n');
+      data = data.filter((element) => element.length > 0);
 
-        if (!Object.keys(studentGroups).includes(field)) {
-          studentGroups[field] = [];
+      data.shift();
+      data.forEach((element) => {
+        if (element.length > 0) {
+          const row = element.split(',');
+          if (row[3] in fields) {
+            fields[row[3]].push(row[0]);
+          } else {
+            fields[row[3]] = [row[0]];
+          }
         }
-        const studentEntries = studentPropertyNames
-          .map((PropertyName, idx) => [PropertyName, studentPropertyValues[idx]]);
-        studentGroups[field].push(Object.fromEntries(studentEntries));
-
-        index += 1; // Increment the index
+      });
+      for (const field in fields) {
+        if (field) {
+          const list = fields[field];
+          dataShow[field] = {
+            list: `List: ${list.toString().replace(/,/g, ', ')}`,
+            number: list.length,
+          };
+        }
       }
-      resolve(studentGroups);
+
+      resolve(dataShow);
     }
   });
 });
+
 module.exports = readDatabase;
