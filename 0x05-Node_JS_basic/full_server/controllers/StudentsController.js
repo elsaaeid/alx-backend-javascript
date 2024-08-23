@@ -1,39 +1,28 @@
 const readDatabase = require('../utils');
 
-const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
 class StudentsController {
-  static async getAllStudents(req, res) {
-    try {
-      const studentGroups = await readDatabase(DB_FILE);
-      const reports = ['This is the list of our students'];
-
-      Object.keys(studentGroups)
-        // Sort fields case-insensitively
-        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-        .forEach((field) => {
-          const studentsList = studentGroups[field].map((student) => student.firstname);
-          reports.push(`Number of students in ${field}: ${studentGroups[field].length}. List: ${studentsList.join(', ')}`);
-        });
-
-      res.status(200).send(reports.join('\n'));
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
+  static getAllStudents(request, response) {
+    readDatabase(process.argv[2])
+      .then((data) => {
+        const printData = [];
+        printData.push('This is the list of our students');
+        for (const field in data) {
+          if (field) printData.push(`Number of students in ${field}: ${data[field].number}. ${data[field].list}`);
+        }
+        response.send(printData.join('\n'));
+      })
+      .catch((err) => { response.send(err.message); });
   }
 
-  static async getAllStudentsByMajor(req, res) {
-    const { major } = req.params; // Destructure major from req.params
-    if (!['CS', 'SWE'].includes(major)) {
-      return res.status(500).send('Major parameter must be CS or SWE');
-    }
-    try {
-      const studentGroups = await readDatabase(DB_FILE);
-      const studentsInMajor = studentGroups[major] || [];
-      const firstNames = studentsInMajor.map((student) => student.firstname).join(', ');
-
-      return res.status(200).send(`List: ${firstNames}`);
-    } catch (error) {
-      return res.status(500).send(error.message);
+  static getAllStudentsByMajor(request, response) {
+    if (!['SWE', 'CS'].includes(request.params.major)) response.status(500).send('Major parameter must be CS or SWE');
+    else {
+      readDatabase(process.argv[2])
+        .then((data) => {
+          if (Object.keys(data).length > 0) response.send(data[request.params.major].list);
+          response.send(500, 'Cannot load the database');
+        })
+        .catch((err) => { response.send(err.message); });
     }
   }
 }
